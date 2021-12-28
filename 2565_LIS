@@ -1,0 +1,54 @@
+#include <iostream>
+#define MAX 501
+using namespace std;
+
+int n;
+int arr[MAX];
+int dp[MAX] = {0,};
+
+void Input()
+{
+    cin >> n;
+    int a, b;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> a >> b;
+        arr[a] = b;
+    }
+    arr[0] = 0;
+    dp[1] = MAX;
+}
+void Solution()
+{
+    int last = 1;
+    for (int i = 1; i < MAX; i++)
+    {
+        if (arr[i] != 0)
+        {
+            for (int j = 1; j <= last; j++)
+            {
+                if (dp[j] >= arr[i])
+                {
+                    dp[j] = arr[i];
+                    break;
+                }
+                if (j == last)
+                {
+                    last++;
+                    dp[last] = arr[i];
+                }
+            }
+        }
+    }
+    cout << n - last;
+}
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    Input();
+    Solution();
+    return 0;
+}
