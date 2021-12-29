@@ -1,72 +1,50 @@
 #include <iostream>
-#define MAX 1001
+#include <algorithm>
+#define MAX 1000
+
 using namespace std;
 
 int n;
 int arr[MAX];
-int DP[MAX];
-int increase[MAX];
-int diminish[MAX];
-int answer = 0;
+int dp[MAX];
+int ans;
+
+void Input()
+{
+    cin >> n;
+    for (int i = 0; i < n; i++) cin >> arr[i];
+}
 
 void Solution()
 {
-    cin >> n;
-    for (int i = 1; i <= n; i++) cin >> arr[i];
-    DP[0] = 0;
-    DP[1] = arr[1];
-    increase[1] = diminish[1] = 1;
-    int last = 1;
-    for (int i = 2; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (int j = 1; j <= last; j++)
+        dp[i] = 1;
+        for (int j = 0; j <= i; j++)
         {
-            if (arr[i] <= DP[j])
+            if (arr[j] < arr[i])
             {
-                DP[j] = arr[i];
-                break;
-            }
-            if (j == last)
-            {
-                last++;
-                DP[last] = arr[i];
-                break;
+                dp[i] = max(dp[i], dp[j] + 1);
             }
         }
-        increase[i] = last;
     }
-    DP[1] = arr[n];
-    last = 1;
-    for (int i = n - 1; i >= 1; i--)
+    
+    ans = dp[0];
+    for (int i = 1; i < n; i++)
     {
-        for (int j = 1; j <= last; j++)
-        {
-            if (arr[i] <= DP[j])
-            {
-                DP[j] = arr[i];
-                break;
-            }
-            if (j == last)
-            {
-                last++;
-                DP[last] = arr[i];
-                break;
-            }
-        }
-        diminish[i] = last;
+        if (ans < dp[i]) ans = dp[i];
     }
-    for (int i = 1; i <= n; i++)
-    {
-        if (increase[i] + diminish[i] - 1 > answer) answer = increase[i] + diminish[i] - 1;
-    }
-    cout << answer;
+    cout << ans;
 }
+
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
 
+    Input();
     Solution();
+
     return 0;
 }
