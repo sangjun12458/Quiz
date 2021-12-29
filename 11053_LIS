@@ -1,38 +1,55 @@
 #include <iostream>
-#define MAX 1001
+#include <algorithm>
+#define MAX 1000
+
 using namespace std;
 
 int n;
 int arr[MAX];
-int DP[MAX];
+int dp1[MAX];
+int dp2[MAX];
+int ans;
+
+void Input()
+{
+    cin >> n;
+    for (int i = 0; i < n; i++) cin >> arr[i];
+}
 
 void Solution()
 {
-    cin >> n;
-    for (int i = 1; i <= n; i++) cin >> arr[i];
-    DP[0] = 0;
-    DP[1] = arr[1];
-    int max = 1;
-    for (int i = 2; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
-        for (int j = max; j >= 0; j--)
+        dp1[i] = 1;
+        dp2[n - 1 - i] = 1;
+        for (int j = 0; j <= i; j++)
         {
-            if (arr[i] > DP[j])
+            if (arr[j] < arr[i])
             {
-                DP[j + 1] = arr[i];
-                if (j == max) max++;
-                break;
+                dp1[i] = max(dp1[i], dp1[j] + 1);
+            }
+            if (arr[n - 1 - j] < arr[n - 1 - i])
+            {
+                dp2[n - 1 - i] = max(dp2[n - 1 - i], dp2[n - 1 - j] + 1);
             }
         }
     }
-    cout << max;
+    ans = dp1[0] + dp2[0] - 1;
+    for (int i = 1; i < n; i++)
+    {
+        if (ans < dp1[i] + dp2[i] - 1) ans = dp1[i] + dp2[i] - 1;
+    }
+    cout << ans;
 }
+
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(NULL);
     cout.tie(NULL);
 
+    Input();
     Solution();
+
     return 0;
 }
