@@ -1,10 +1,13 @@
 #include <iostream>
+#include <algorithm>
 #define MAX 501
+
 using namespace std;
 
 int n;
-int arr[MAX];
-int dp[MAX] = {0,};
+int arr[MAX] = {0,};
+int dp[MAX];
+int ans = 0;
 
 void Input()
 {
@@ -15,32 +18,25 @@ void Input()
         cin >> a >> b;
         arr[a] = b;
     }
-    arr[0] = 0;
-    dp[1] = MAX;
 }
 void Solution()
 {
-    int last = 1;
     for (int i = 1; i < MAX; i++)
     {
         if (arr[i] != 0)
         {
-            for (int j = 1; j <= last; j++)
+            dp[i] = 1;
+            for (int j = 1; j < i; j++)
             {
-                if (dp[j] >= arr[i])
+                if (arr[j] < arr[i])
                 {
-                    dp[j] = arr[i];
-                    break;
-                }
-                if (j == last)
-                {
-                    last++;
-                    dp[last] = arr[i];
+                    dp[i] = max(dp[i], dp[j] + 1);
                 }
             }
+            if (ans < dp[i]) ans = dp[i];
         }
     }
-    cout << n - last;
+    cout << n - ans;
 }
 int main()
 {
