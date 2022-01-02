@@ -1,0 +1,67 @@
+#include <iostream>
+#include <cstring>
+#include <vector>
+#include <sstream>
+
+using namespace std;
+
+int main()
+{
+    string str;
+    cin >> str;
+
+    int previous = 0;
+    int current;
+    string substring;
+    vector<string> v1;
+    vector<string> v2;
+    vector<string> v3;
+    v1.clear();
+    v2.clear();
+    v3.clear();
+
+    current = str.find('-');
+    while (current != string::npos)
+    {
+        substring = str.substr(previous, current - previous);
+        v1.push_back(substring);
+        previous = current + 1;
+        current = str.find('-', previous);
+    }
+    v1.push_back(str.substr(previous, current - previous));
+    
+    for (int i = 0; i < v1.size(); i++)
+    {
+        previous = 0;
+        current = v1[i].find('+');
+        while (current != string::npos)
+        {
+            substring = v1[i].substr(previous, current - previous);
+            if (i == 0)
+            {
+                v2.push_back(substring);
+            }
+            else
+            {
+                v3.push_back(substring);
+            }
+            previous = current + 1;
+            current = v1[i].find('+', previous);
+        }
+        if (i == 0)
+        {
+            v2.push_back(v1[i].substr(previous, current - previous));
+        }
+        else
+        {
+            v3.push_back(v1[i].substr(previous, current - previous));
+        }
+    }
+
+    int ans = 0;
+    for (int i = 0; i < v2.size(); i++) ans += stoi(v2[i]);
+    for (int i = 0; i < v3.size(); i++) ans -= stoi(v3[i]);
+    cout << ans;
+    
+    return 0;
+}
