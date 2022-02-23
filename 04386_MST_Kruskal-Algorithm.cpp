@@ -16,10 +16,10 @@ float calculate(int a, int b) //거리 계산
     float dy = v[a].second - v[b].second;
     return sqrt(pow(dx, 2) + pow(dy, 2));
 }
-int do_find(int n) //점의 루트 찾기
+int do_find(int node) //점의 루트 찾기
 {
-    if (link[n] == n) return n;
-    return link[n] = do_find(link[n]);
+    if (link[node] == node) return node;
+    return link[node] = do_find(link[node]);
 }
 void do_union(int n1, int n2) //두 점을 잇기
 {
