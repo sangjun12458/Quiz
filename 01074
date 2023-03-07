@@ -1,0 +1,30 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int solve(int r, int c, int s1, int s2, int len)
+{
+	if (len < 1)
+		return 0;
+	int m1 = s1 + len;
+	int m2 = s2 + len;
+	if (r < m1 && c < m2)
+		return solve(r, c, s1, s2, len / 2);
+	else if (r < m1 && c >= m2)
+		return len * len * 1 + solve(r, c, s1, m2, len / 2);
+	else if (r >= m1 && c < m2)
+		return len * len * 2 + solve(r, c, m1, s2, len / 2);
+	else
+		return len * len * 3 + solve(r, c, m1, m2, len / 2);
+}
+
+int main()
+{
+	int N, r, c;
+	cin >> N >> r >> c;
+
+	int len = pow(2, N - 1);
+	cout << solve(r, c, 0, 0, len);
+
+	return 0;
+}
